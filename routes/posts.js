@@ -15,7 +15,12 @@ let posts = [
 
 ];
 
-router.get('/', (req,res) => {
+const logger = (req, res, next) => {
+  console.log(`${req.methos} ${req.protocol}://${req.get('host')} ${req.originalUrl}`);
+  next();
+};
+
+router.get('/', logger, (req,res) => {
   
   const limit = parseInt(req.query.limit);
 
@@ -40,5 +45,11 @@ router.get('/:id', (req,res) => {
   }
   res.status(200).json({msg: `A post with the id ${post} is present`});
 })  ;
+
+router.put('/:id',(req,res) => {
+  const id = parseInt(req.params.id);
+  const post = posts.find((post) => post.id === id);
+});
+
 
 export default router;
